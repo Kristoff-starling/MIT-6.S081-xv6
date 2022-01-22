@@ -5,6 +5,7 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "defs.h"
+#include "sysinfo.h"
 
 struct cpu cpus[NCPU];
 
@@ -16,6 +17,7 @@ int nextpid = 1;
 struct spinlock pid_lock;
 
 extern void forkret(void);
+extern int kmemory_query(void);
 static void wakeup1(struct proc *chan);
 static void freeproc(struct proc *p);
 
@@ -636,6 +638,23 @@ kill(int pid)
     release(&p->lock);
   }
   return -1;
+}
+
+// Query the current system information
+int
+systeminfo(uint64 addr)
+{
+  struct proc *p = myproc();
+  struct sysinfo st;
+
+  st.freemem = kmemory_query();
+  st.nproc = 0;
+  for (int i = 0; i < NPROC; i ++)
+    if (proc[i].state != UNUSED) st.nproc ++;
+
+  if (copyout(p->pagetable, addr, (char *)&st, sizeof(st)) < 0)
+    return -1;
+  return 0;
 }
 
 // Copy to either a user address, or kernel address,

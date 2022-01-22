@@ -106,3 +106,13 @@ sys_trace(void)
   myproc()->tMask = tMask;
   return 0;
 }
+
+// collect system info
+uint64
+sys_sysinfo(void)
+{
+  uint64 p;
+  if (argaddr(0, &p) < 0)
+    return -1;
+  return systeminfo(p);
+}

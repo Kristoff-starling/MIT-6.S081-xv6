@@ -121,6 +121,25 @@ found:
     return 0;
   }
 
+  // An user kernel page table
+  p->k_pagetable = ukvminit();
+  if (p->k_pagetable == 0)
+  {
+    freeproc(p);
+    release(&p->lock);
+    return 0;
+  }
+
+  // kernel stack
+  uint64 pa = kvmpa(KSTACK((int)(p - proc)));
+  ukvmmap(p->k_pagetable, KSTACK((int)(p - proc)), pa, PGSIZE, PTE_R | PTE_W);
+  /*
+  uint64 pa = (uint64)kalloc();
+  uint64 va = KSTACK((int)(p - proc));
+  ukvmmap(p->k_pagetable, va, pa, PGSIZE, PTE_R | PTE_W);
+  p->kstack = va;
+  */
+
   // Set up new context to start executing at forkret,
   // which returns to user space.
   memset(&p->context, 0, sizeof(p->context));
@@ -141,6 +160,8 @@ freeproc(struct proc *p)
   p->trapframe = 0;
   if(p->pagetable)
     proc_freepagetable(p->pagetable, p->sz);
+  if(p->k_pagetable)
+    proc_freekpagetable(p->k_pagetable, p->sz);
   p->pagetable = 0;
   p->sz = 0;
   p->pid = 0;
@@ -193,6 +214,12 @@ proc_freepagetable(pagetable_t pagetable, uint64 sz)
   uvmunmap(pagetable, TRAMPOLINE, 1, 0);
   uvmunmap(pagetable, TRAPFRAME, 1, 0);
   uvmfree(pagetable, sz);
+}
+
+void
+proc_freekpagetable(pagetable_t pagetable, uint64 sz)
+{
+  kfreewalk(pagetable);
 }
 
 // a user program that calls exec("/init")
@@ -453,6 +480,7 @@ wait(uint64 addr)
 //  - swtch to start running that process.
 //  - eventually that process transfers control
 //    via swtch back to the scheduler.
+extern pagetable_t kernel_pagetable;
 void
 scheduler(void)
 {
@@ -473,7 +501,13 @@ scheduler(void)
         // before jumping back to us.
         p->state = RUNNING;
         c->proc = p;
+
+        w_satp(MAKE_SATP(p->k_pagetable));
+        sfence_vma();
+
         swtch(&c->context, &p->context);
+
+        kvminithart();
 
         // Process is done running for now.
         // It should have changed its p->state before coming back.

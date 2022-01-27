@@ -121,7 +121,7 @@ found:
     return 0;
   }
 
-  // An user kernel page table
+  // A user kernel page table
   p->k_pagetable = ukvminit();
   if (p->k_pagetable == 0)
   {

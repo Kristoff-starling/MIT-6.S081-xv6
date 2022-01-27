@@ -131,8 +131,9 @@ found:
   }
 
   // kernel stack
-  uint64 pa = kvmpa(KSTACK((int)(p - proc)));
-  ukvmmap(p->k_pagetable, KSTACK((int)(p - proc)), pa, PGSIZE, PTE_R | PTE_W);
+  uint64 kstack_va = KSTACK((int)(p - proc));
+  uint64 kstack_pa = kvmpa(kstack_va);
+  ukvmmap(p->k_pagetable, kstack_va, kstack_pa, PGSIZE, PTE_R | PTE_W);
   /*
   uint64 pa = (uint64)kalloc();
   uint64 va = KSTACK((int)(p - proc));
@@ -163,6 +164,7 @@ freeproc(struct proc *p)
   if(p->k_pagetable)
     proc_freekpagetable(p->k_pagetable, p->sz);
   p->pagetable = 0;
+  p->k_pagetable = 0;
   p->sz = 0;
   p->pid = 0;
   p->parent = 0;
@@ -219,6 +221,8 @@ proc_freepagetable(pagetable_t pagetable, uint64 sz)
 void
 proc_freekpagetable(pagetable_t pagetable, uint64 sz)
 {
+  if (sz > 0)
+    uvmunmap(pagetable, 0, PGROUNDUP(sz)/PGSIZE, 0);
   kfreewalk(pagetable);
 }
 
@@ -245,7 +249,8 @@ userinit(void)
   
   // allocate one user page and copy init's instructions
   // and data into it.
-  uvminit(p->pagetable, initcode, sizeof(initcode));
+  uvminit(p->pagetable, initcode, sizeof(initcode), 0);
+  uvminit(p->k_pagetable, initcode, sizeof(initcode), 1);
   p->sz = PGSIZE;
 
   // prepare for the very first "return" from kernel to user.
@@ -270,11 +275,13 @@ growproc(int n)
 
   sz = p->sz;
   if(n > 0){
-    if((sz = uvmalloc(p->pagetable, sz, sz + n)) == 0) {
-      return -1;
-    }
+    sz = uvmalloc(p->pagetable, p->sz, p->sz + n, 0);
+    if (sz == 0) return -1;
+    sz = ukvmalloc(p->pagetable, p->k_pagetable, p->sz, p->sz + n);
+    if (sz == 0) return -1;
   } else if(n < 0){
-    sz = uvmdealloc(p->pagetable, sz, sz + n);
+    sz = uvmdealloc(p->pagetable, p->sz, p->sz + n, 0);
+    uvmdealloc(p->k_pagetable, p->sz, p->sz + n, 1);
   }
   p->sz = sz;
   return 0;
@@ -294,15 +301,24 @@ fork(void)
     return -1;
   }
 
+  np->sz = p->sz;
+  
+  np->parent = p;
+
   // Copy user memory from parent to child.
-  if(uvmcopy(p->pagetable, np->pagetable, p->sz) < 0){
+  if(uvmcopy(p->pagetable, np->pagetable, p->sz, 0) < 0){
     freeproc(np);
     release(&np->lock);
     return -1;
   }
-  np->sz = p->sz;
 
-  np->parent = p;
+  // Copy user memory to child's kernel page table
+  if (uvmcopy(np->pagetable, np->k_pagetable, p->sz, 1) < 0)
+  {
+    freeproc(np);
+    release(&np->lock);
+    return -1;
+  }
 
   // copy saved user registers.
   *(np->trapframe) = *(p->trapframe);

@@ -12,6 +12,9 @@ int
 fetchaddr(uint64 addr, uint64 *ip)
 {
   struct proc *p = myproc();
+  // printf("%s\n", p->name);
+  // printf("%p\n", r_satp());
+  // printf("%p\n", MAKE_SATP(p->k_pagetable));
   if(addr >= p->sz || addr+sizeof(uint64) > p->sz)
     return -1;
   if(copyin(p->pagetable, (char *)ip, addr, sizeof(*ip)) != 0)

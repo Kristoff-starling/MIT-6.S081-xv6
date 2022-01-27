@@ -63,9 +63,6 @@ ukvminit()
   // virtio mmio disk interface
   ukvmmap(pagetable, VIRTIO0, VIRTIO0, PGSIZE, PTE_R | PTE_W);
 
-  // CLINT
-  ukvmmap(pagetable, CLINT, CLINT, 0x10000, PTE_R | PTE_W);
-
   // PLIC
   ukvmmap(pagetable, PLIC, PLIC, 0x400000, PTE_R | PTE_W);
 
@@ -272,7 +269,7 @@ uvminit(pagetable_t pagetable, uchar *src, uint sz, int iskernel)
 // Allocate PTEs and physical memory to grow process from oldsz to
 // newsz, which need not be page aligned.  Returns new size or 0 on error.
 uint64
-uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int iskernel)
+uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz)
 {
   char *mem;
   uint64 a;
@@ -280,8 +277,7 @@ uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int iskernel)
   if(newsz < oldsz)
     return oldsz;
   
-  if (newsz >= PLIC)
-    panic("uvmalloc: user space overflow");
+  if (newsz >= PLIC) return 0;
 
   oldsz = PGROUNDUP(oldsz);
   for(a = oldsz; a < newsz; a += PGSIZE){
@@ -291,8 +287,7 @@ uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int iskernel)
       return 0;
     }
     memset(mem, 0, PGSIZE);
-    int flags = PTE_W|PTE_X|PTE_R;
-    if (!iskernel) flags |= PTE_U;
+    int flags = PTE_W|PTE_X|PTE_R|PTE_U;
     if(mappages(pagetable, a, PGSIZE, (uint64)mem, flags) != 0){
       kfree(mem);
       uvmdealloc(pagetable, a, oldsz, 0);
@@ -310,8 +305,7 @@ ukvmalloc(pagetable_t pagetable, pagetable_t k_pagetable, uint64 oldsz, uint64 n
 
   if (newsz < oldsz)
     return oldsz;
-  if (newsz >= PLIC)
-    panic("uvkmalloc: user space overflow");
+  if (newsz >= PLIC) return 0;
 
   oldsz = PGROUNDUP(oldsz);
   
@@ -320,7 +314,7 @@ ukvmalloc(pagetable_t pagetable, pagetable_t k_pagetable, uint64 oldsz, uint64 n
     if ((pte = walk(pagetable, va, 0)) == 0)
       panic("ukvmalloc: pte should exist");
     if ((*pte & PTE_V) == 0)
-      panic("uvkmalloc: page not present"); 
+      panic("ukvmalloc: page not present"); 
     uint64 pa = PTE2PA(*pte);
     int flags = PTE_FLAGS(*pte) & ~PTE_U;
     if (mappages(k_pagetable, va, PGSIZE, pa, flags) != 0)

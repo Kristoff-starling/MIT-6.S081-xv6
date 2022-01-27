@@ -168,7 +168,7 @@ void            ukvmmap(pagetable_t, uint64, uint64, uint64, int);
 int             mappages(pagetable_t, uint64, uint64, uint64, int);
 pagetable_t     uvmcreate(void);
 void            uvminit(pagetable_t, uchar *, uint, int);
-uint64          uvmalloc(pagetable_t, uint64, uint64, int);
+uint64          uvmalloc(pagetable_t, uint64, uint64);
 uint64          ukvmalloc(pagetable_t, pagetable_t, uint64, uint64);
 uint64          uvmdealloc(pagetable_t, uint64, uint64, int);
 #ifdef SOL_COW

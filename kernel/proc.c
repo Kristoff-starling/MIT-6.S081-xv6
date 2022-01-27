@@ -275,7 +275,7 @@ growproc(int n)
 
   sz = p->sz;
   if(n > 0){
-    sz = uvmalloc(p->pagetable, p->sz, p->sz + n, 0);
+    sz = uvmalloc(p->pagetable, p->sz, p->sz + n);
     if (sz == 0) return -1;
     sz = ukvmalloc(p->pagetable, p->k_pagetable, p->sz, p->sz + n);
     if (sz == 0) return -1;
@@ -313,7 +313,7 @@ fork(void)
   }
 
   // Copy user memory to child's kernel page table
-  if (uvmcopy(np->pagetable, np->k_pagetable, p->sz, 1) < 0)
+  if (uvmcopy(np->pagetable, np->k_pagetable, np->sz, 1) < 0)
   {
     freeproc(np);
     release(&np->lock);

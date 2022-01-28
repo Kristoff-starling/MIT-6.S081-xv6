@@ -26,7 +26,7 @@ The repository includes useful material for learning MIT-6.S081: Introduction to
 * Lecture 02: (Video missing)
 * [Lecture 03: OS Organization and System Calls](https://kristoff-starling.github.io/2022/01/28/MIT-6.S081%20Lecture%2003%20-%20OS%20Organization%20and%20System%20Calls/)
 * [Lecture 04: Page Tables](https://kristoff-starling.github.io/2022/01/28/MIT-6.S081%20Lecture%2004%20-%20Page%20Tables/)
-* Lecture 05: RISC-V Calling Convention and Stack Frames
+* [Lecture 05: RISC-V Calling Convention and Stack Frames](https://kristoff-starling.github.io/2022/01/28/MIT-6.S081%20Lecture%2005%20-%20RISCV%20Calling%20Convention%20and%20Stack%20Frames/)
 * Lecture 06: Isolation & System Call `Entry_Exit`
 * Lecture 07: Q&A for Labs #1
 * Lecture 08: Page Faults

@@ -11,7 +11,7 @@ The repository includes useful material for learning MIT-6.S081: Introduction to
 - [x] Lab 01: Xv6 and Unix utilities ([Lab Report](https://kristoff-starling.github.io/2022/01/28/MIT-6.S081%20Lab%2001%20-%20Xv6%20and%20Unix%20utilities/))
 - [x] Lab 02: System calls ([Lab Report](https://kristoff-starling.github.io/2022/01/28/MIT-6.S081%20Lab%2002%20-%20System%20calls/))
 - [x] Lab 03: Page tables ([Lab Report](https://kristoff-starling.github.io/2022/01/28/MIT-6.S081%20Lab%2003%20-%20Page%20tables/))
-- [ ] Lab 04: Traps
+- [x] Lab 04: Traps ([Lab Report](https://kristoff-starling.github.io/2022/01/31/MIT-6.S081%20Lab%2004%20-%20Traps/))
 - [ ] Lab 05: Xv6 lazy page allocation
 - [ ] Lab 06: Copy-on-write fork for xv6
 - [ ] Lab 07: Multithreading

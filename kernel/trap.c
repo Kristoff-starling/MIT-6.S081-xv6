@@ -78,7 +78,24 @@ usertrap(void)
 
   // give up the CPU if this is a timer interrupt.
   if(which_dev == 2)
+  {
+    if (p->nticks != 0) // sigalarm exists
+    {
+      if (p->curticks == p->nticks)
+      {
+        p->curticks = 0;
+        if (!p->in_handler)
+        {
+          p->u_trapframe = *p->trapframe;
+          p->trapframe->epc = p->handler;
+          p->in_handler = 1;
+        }
+      }
+      else if (p->curticks < p->nticks)
+        p->curticks ++;
+    }
     yield();
+  }
 
   usertrapret();
 }

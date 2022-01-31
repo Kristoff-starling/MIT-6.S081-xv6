@@ -95,12 +95,17 @@ struct proc {
   int pid;                     // Process ID
 
   // these are private to the process, so p->lock need not be held.
-  uint64 kstack;               // Virtual address of kernel stack
-  uint64 sz;                   // Size of process memory (bytes)
-  pagetable_t pagetable;       // User page table
-  struct trapframe *trapframe; // data page for trampoline.S
-  struct context context;      // swtch() here to run process
-  struct file *ofile[NOFILE];  // Open files
-  struct inode *cwd;           // Current directory
-  char name[16];               // Process name (debugging)
+  uint64 kstack;                // Virtual address of kernel stack
+  uint64 sz;                    // Size of process memory (bytes)
+  pagetable_t pagetable;        // User page table
+  int nticks;                   // nticks set by user
+  int curticks;                 // ticks since last alarm
+  uint64 handler;               // user's handler function
+  int in_handler;               // whether user is in handler
+  struct trapframe u_trapframe; // user's original trapframe;
+  struct trapframe *trapframe;  // data page for trampoline.S
+  struct context context;       // swtch() here to run process
+  struct file *ofile[NOFILE];   // Open files
+  struct inode *cwd;            // Current directory
+  char name[16];                // Process name (debugging)
 };

@@ -3,8 +3,8 @@
 # (e.g., LB=util).  Run make grade to test solution with the lab's
 # grade script (e.g., grade-lab-util).
 
-LAB_UTIL=enable
-LAB_SYSCALL=enable
+LAB_UTIL=01
+LAB_SYSCALL=02
 
 -include conf/lab.mk
 
@@ -79,6 +79,10 @@ endif
 
 ifdef LAB_UTIL
 CFLAGS += -DLAB_UTIL
+endif
+
+ifdef LAB_SYSCALL
+CFLAGS += -DLAB_SYSCALL
 endif
 
 CFLAGS += -MD

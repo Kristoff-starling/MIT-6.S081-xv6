@@ -109,7 +109,7 @@ walkaddr(pagetable_t pagetable, uint64 va)
 
   if (pte == 0 || (*pte & PTE_V) == 0)
   {
-    if (!(p->ustack <= va && va < p->sz))
+    if (!(PGROUNDUP(p->trapframe->sp) <= va && va < p->sz))
       return 0;
 
     pa = (uint64)kalloc();

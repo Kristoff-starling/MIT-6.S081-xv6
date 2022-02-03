@@ -34,7 +34,7 @@ pgfault_handler(uint64 va)
 {
   struct proc *p = myproc();
 
-  if (!(p->ustack <= va && va < p->sz))
+  if (!(PGROUNDUP(p->trapframe->sp) <= va && va < p->sz))
   {
     p->killed = 1;
     return 0;

@@ -8,19 +8,19 @@ The repository includes useful material for learning MIT-6.S081: Introduction to
 
 ## Lab Progress
 
-| Lab title                                                    | Code | Master branch project |
-| :----------------------------------------------------------: | :--: | :-------------------: |
-| Lab 01: Xv6 and Unix utilities ([Lab Report](https://kristoff-starling.github.io/2022/01/28/MIT-6.S081%20Lab%2001%20-%20Xv6%20and%20Unix%20utilities/)) | Completed | Completed |
-| Lab 02: System calls ([Lab Report](https://kristoff-starling.github.io/2022/01/28/MIT-6.S081%20Lab%2002%20-%20System%20calls/)) | Completed | Completed |
-| Lab 03: Page tables ([Lab Report](https://kristoff-starling.github.io/2022/01/28/MIT-6.S081%20Lab%2003%20-%20Page%20tables/)) | Completed | - |
-| Lab 04: Traps ([Lab Report](https://kristoff-starling.github.io/2022/01/31/MIT-6.S081%20Lab%2004%20-%20Traps/)) | Completed | - |
-| Lab 05: Xv6 lazy page allocation                             | -    | - |
-| Lab 06: Copy-on-write fork for xv6                           | - | - |
-| Lab 07: Multithreading                                       | - | - |
-| Lab 08: Locks                                                | - | - |
-| Lab 09: File system                                          | - | - |
-| Lab 10: mmap                                                 | - | - |
-| Lab 11: Networking                                           | - | - |
+| Lab title                                                    | Code | Master branch project | Lab Reports |
+| :----------------------------------------------------------: | ---- | --------------------- | --------------------- |
+| Lab 01: Xv6 and Unix utilities | Completed | Completed | [Lab Report](https://kristoff-starling.github.io/2022/01/28/MIT-6.S081%20Lab%2001%20-%20Xv6%20and%20Unix%20utilities/) |
+| Lab 02: System calls | Completed | Completed | [Lab Report](https://kristoff-starling.github.io/2022/01/28/MIT-6.S081%20Lab%2002%20-%20System%20calls/) |
+| Lab 03: Page tables | Completed | - | [Lab Report](https://kristoff-starling.github.io/2022/01/28/MIT-6.S081%20Lab%2003%20-%20Page%20tables/) |
+| Lab 04: Traps | Completed | - | [Lab Report](https://kristoff-starling.github.io/2022/01/31/MIT-6.S081%20Lab%2004%20-%20Traps/) |
+| Lab 05: Xv6 lazy page allocation                             | -    | - |  |
+| Lab 06: Copy-on-write fork for xv6                           | - | - |  |
+| Lab 07: Multithreading                                       | - | - |  |
+| Lab 08: Locks                                                | - | - |  |
+| Lab 09: File system                                          | - | - |  |
+| Lab 10: mmap                                                 | - | - |  |
+| Lab 11: Networking                                           | - | - |  |
 
 ## Lecture Notes
 

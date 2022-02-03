@@ -199,8 +199,8 @@ ifdef LAB_UTIL
 	UEXTRA += user/xargstest.sh
 endif
 
-fs.img: mkfs/mkfs README.md $(UEXTRA) $(UPROGS)
-	mkfs/mkfs fs.img README.md $(UEXTRA) $(UPROGS)
+fs.img: mkfs/mkfs README README.md $(UEXTRA) $(UPROGS)
+	mkfs/mkfs fs.img README README.md $(UEXTRA) $(UPROGS)
 
 -include kernel/*.d user/*.d
 

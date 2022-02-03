@@ -36,3 +36,8 @@ entry("getpid");
 entry("sbrk");
 entry("sleep");
 entry("uptime");
+if (defined(LAB_SYSCALL))
+{
+entry("trace");
+entry("sysinfo");
+}

@@ -5,6 +5,9 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "defs.h"
+#ifdef LAB_SYSCALL
+#include "sysinfo.h"
+#endif
 
 struct cpu cpus[NCPU];
 
@@ -15,6 +18,9 @@ struct proc *initproc;
 int nextpid = 1;
 struct spinlock pid_lock;
 
+#ifdef LAB_SYSCALL
+extern int kmemory_query(void);
+#endif
 extern void forkret(void);
 static void wakeup1(struct proc *chan);
 static void freeproc(struct proc *p);
@@ -276,6 +282,10 @@ fork(void)
   np->sz = p->sz;
 
   np->parent = p;
+
+#ifdef LAB_SYSCALL
+  np->tMask = p->tMask;
+#endif
 
   // copy saved user registers.
   *(np->trapframe) = *(p->trapframe);
@@ -634,6 +644,25 @@ kill(int pid)
   }
   return -1;
 }
+
+#ifdef LAB_SYSCALL
+// Query the current system information
+int
+systeminfo(uint64 addr)
+{
+  struct proc *p = myproc();
+  struct sysinfo st;
+
+  st.freemem = kmemory_query();
+  st.nproc = 0;
+  for (int i = 0; i < NPROC; i ++)
+    if (proc[i].state != UNUSED) st.nproc ++;
+
+  if (copyout(p->pagetable, addr, (char *)&st, sizeof(st)) < 0)
+    return -1;
+  return 0;
+}
+#endif
 
 // Copy to either a user address, or kernel address,
 // depending on usr_dst.

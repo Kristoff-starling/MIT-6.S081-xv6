@@ -4,6 +4,7 @@
 # grade script (e.g., grade-lab-util).
 
 LAB_UTIL=enable
+LAB_SYSCALL=enable
 
 -include conf/lab.mk
 

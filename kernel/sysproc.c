@@ -95,3 +95,26 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+#ifdef LAB_SYSCALL
+// system call tracing
+uint64
+sys_trace(void)
+{
+  int tMask;
+  if (argint(0, &tMask) < 0)
+    return -1;
+  myproc()->tMask = tMask;
+  return 0;
+}
+
+// collect system info
+uint64
+sys_sysinfo(void)
+{
+  uint64 p;
+  if (argaddr(0, &p) < 0)
+    return -1;
+  return systeminfo(p);
+}
+#endif

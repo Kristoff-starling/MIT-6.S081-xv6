@@ -3,7 +3,7 @@
 The repository includes useful material for learning MIT-6.S081: Introduction to Operating Systems. It consists of the following parts:
 
 * Lecture notes: links to lecture notes (English version) are available at the "Lecture Note" part. Some code details may not be included in the lecture notes. You can refer to the "Xv6-book Notes" and "Xv6 Source code Manual" for details.
-* Lab source code: You can refer to the corresponding branches for implementation of labs. The master branch aims at merging all the features implemented in labs and present an improved version of xv6.
+* Lab source code: You can refer to the corresponding branches for implementation of labs. The master branch aims at merging all the features implemented in labs and presenting an improved version of xv6.
 * Lab reports: links to lab reports (Chinese version) are available at the "Lab Progress" part. Different from other bloggers who offer the complete code implementation of labs, our labs reports focus on the high-level implementation and some tricky details we encountered when debugging. You can refer to the lab reports for general ideas. If you want to refer to the detailed code, you should switch to corresponding branches.
 
 ## Lab Progress

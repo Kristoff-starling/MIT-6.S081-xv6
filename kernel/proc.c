@@ -143,6 +143,7 @@ freeproc(struct proc *p)
     proc_freepagetable(p->pagetable, p->sz);
   p->pagetable = 0;
   p->sz = 0;
+  p->ustack = 0;
   p->pid = 0;
   p->parent = 0;
   p->name[0] = 0;
@@ -238,18 +239,20 @@ userinit(void)
 int
 growproc(int n)
 {
-  uint sz;
+  // uint sz;
   struct proc *p = myproc();
 
-  sz = p->sz;
+  // sz = p->sz;
   if(n > 0){
-    if((sz = uvmalloc(p->pagetable, sz, sz + n)) == 0) {
-      return -1;
-    }
+    if (p->sz + n >= MAXVA) return -1;
+    p->sz += n;
+    // if((sz = uvmalloc(p->pagetable, sz, sz + n)) == 0) {
+      // return -1;
+    // }
   } else if(n < 0){
-    sz = uvmdealloc(p->pagetable, sz, sz + n);
+    p->sz = uvmdealloc(p->pagetable, p->sz, p->sz + n);
   }
-  p->sz = sz;
+  // p->sz = sz;
   return 0;
 }
 
@@ -274,6 +277,7 @@ fork(void)
     return -1;
   }
   np->sz = p->sz;
+  np->ustack = p->ustack;
 
   np->parent = p;
 

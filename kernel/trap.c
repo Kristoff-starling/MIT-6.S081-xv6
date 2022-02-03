@@ -29,6 +29,36 @@ trapinithart(void)
   w_stvec((uint64)kernelvec);
 }
 
+uint64
+pgfault_handler(uint64 va)
+{
+  struct proc *p = myproc();
+
+  if (!(p->ustack <= va && va < p->sz))
+  {
+    p->killed = 1;
+    return 0;
+  }
+  
+  uint64 ka = (uint64) kalloc();
+  if (ka == 0)
+  {
+    p->killed = 1;
+    return 0;
+  }
+  
+  va = PGROUNDDOWN(va);
+  memset((void *)ka, 0, PGSIZE);
+  if (mappages(p->pagetable, va, PGSIZE, ka, PTE_R|PTE_W|PTE_U) != 0)
+  {
+    kfree((void *)ka);
+    p->killed = 1;
+    return 0;
+  }
+
+  return ka;
+}
+
 //
 // handle an interrupt, exception, or system call from user space.
 // called from trampoline.S
@@ -67,6 +97,9 @@ usertrap(void)
     syscall();
   } else if((which_dev = devintr()) != 0){
     // ok
+  } else if(r_scause() == 13 || r_scause() == 15){
+    // page faults
+    pgfault_handler(r_stval());
   } else {
     printf("usertrap(): unexpected scause %p pid=%d\n", r_scause(), p->pid);
     printf("            sepc=%p stval=%p\n", r_sepc(), r_stval());

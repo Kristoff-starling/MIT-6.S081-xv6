@@ -9,7 +9,7 @@ The repository includes useful material for learning MIT-6.S081: Introduction to
 ## Lab Progress
 
 | Lab title                                                    | Code | Master branch project | Difficulty | Lab reports |
-| :----------------------------------------------------------- | :--: | :-------------------: | :-------------------: | --------------------- |
+| :----------------------------------------------------------- | :--: | :-------------------: | :-------------------: | :---------------------: |
 | Lab 01: Xv6 and Unix utilities | Completed | Completed | ☆ | [Lab Report](https://kristoff-starling.github.io/2022/01/28/MIT-6.S081%20Lab%2001%20-%20Xv6%20and%20Unix%20utilities/) |
 | Lab 02: System calls | Completed | Completed | ☆ | [Lab Report](https://kristoff-starling.github.io/2022/01/28/MIT-6.S081%20Lab%2002%20-%20System%20calls/) |
 | Lab 03: Page tables | Completed | - | ☆☆☆☆☆ | [Lab Report](https://kristoff-starling.github.io/2022/01/28/MIT-6.S081%20Lab%2003%20-%20Page%20tables/) |

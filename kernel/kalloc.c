@@ -23,12 +23,15 @@ struct {
   struct run *freelist;
 } kmem;
 
-int ref_cnt[PHYSTOP / PGSIZE + 10];
+#define PGCNT (PHYSTOP / PGSIZE + 10)
+struct spinlock cntlock;
+int ref_cnt[PGCNT];
 
 void
 kinit()
 {
   initlock(&kmem.lock, "kmem");
+  initlock(&cntlock, "ref_cnt");
   freerange(end, (void*)PHYSTOP);
 }
 
@@ -38,7 +41,12 @@ freerange(void *pa_start, void *pa_end)
   char *p;
   p = (char*)PGROUNDUP((uint64)pa_start);
   for(; p + PGSIZE <= (char*)pa_end; p += PGSIZE)
-    ref_cnt[PGINDEX((uint64)p)] = 1, kfree(p);
+  {
+    acquire(&cntlock);
+    ref_cnt[PGINDEX((uint64)p)] = 1;
+    release(&cntlock);
+    kfree(p);
+  }
 }
 
 // Free the page of physical memory pointed at by v,
@@ -51,9 +59,17 @@ kfree(void *pa)
   struct run *r;
 
   if(((uint64)pa % PGSIZE) != 0 || (char*)pa < end || (uint64)pa >= PHYSTOP)
-    panic("kfree");
-  
-  if (--ref_cnt[PGINDEX((uint64)pa)] > 0) return;
+    panic("kfree: invalid pa");
+
+  acquire(&cntlock);
+  ref_cnt[PGINDEX((uint64)pa)]--;
+  if (ref_cnt[PGINDEX((uint64)pa)] > 0)
+  {
+    release(&cntlock);
+    return;
+  }
+  release(&cntlock);
+  panic_on(ref_cnt[PGINDEX((uint64)pa)] == 0, "kfree: mapped");
 
   // Fill with junk to catch dangling refs.
   memset(pa, 1, PGSIZE);
@@ -83,14 +99,34 @@ kalloc(void)
   if(r)
   {
     memset((char*)r, 5, PGSIZE); // fill with junk
-    ref_cnt[PGINDEX((uint64)r)] = 1; // reference count init
+    acquire(&cntlock);
+    panic_on(ref_cnt[PGINDEX((uint64)r)] == 0, "rcnt");
+    ref_cnt[PGINDEX((uint64)r)] = 1;
+    release(&cntlock);
   }
   return (void*)r;
 }
 
+// Read reference count
+int
+krref(uint64 pa)
+{
+  int rt;
+  panic_on(PGINDEX(pa) <= PGCNT, "invalid pa");
+  acquire(&cntlock);
+  rt = ref_cnt[PGINDEX(pa)];
+  release(&cntlock);
+  panic_on(rt >= 0, "strange ref");
+  return rt;
+}
+
 // Modify reference count
 void
-kref(uint64 pa, int delta)
+kmref(uint64 pa, int delta)
 {
+  panic_on(PGINDEX(pa) <= PGCNT, "invalid pa");
+  acquire(&cntlock);
   ref_cnt[PGINDEX(pa)] += delta;
+  panic_on(ref_cnt[PGINDEX(pa)] >= 0, "strange ref");
+  release(&cntlock);
 }

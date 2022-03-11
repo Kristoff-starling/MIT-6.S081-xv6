@@ -63,7 +63,6 @@ void            ramdiskrw(struct buf*);
 void*           kalloc(void);
 void            kfree(void *);
 void            kinit(void);
-int             krref(uint64);
 void            kmref(uint64, int);
 
 // log.c

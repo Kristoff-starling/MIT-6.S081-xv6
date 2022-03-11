@@ -107,19 +107,6 @@ kalloc(void)
   return (void*)r;
 }
 
-// Read reference count
-int
-krref(uint64 pa)
-{
-  int rt;
-  panic_on(PGINDEX(pa) <= PGCNT, "invalid pa");
-  acquire(&cntlock);
-  rt = ref_cnt[PGINDEX(pa)];
-  release(&cntlock);
-  panic_on(rt >= 0, "strange ref");
-  return rt;
-}
-
 // Modify reference count
 void
 kmref(uint64 pa, int delta)

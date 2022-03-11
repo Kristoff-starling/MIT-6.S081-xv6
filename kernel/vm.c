@@ -356,9 +356,6 @@ uvmcow(pagetable_t pagetable, uint64 va)
   void *mem;
 
   if ((pte = walk(pagetable, va, 0)) == 0) return -1;
-  // panic_on((*pte * PTE_V) != 0, "PTE_V");
-  // panic_on((*pte * PTE_U) != 0, "PTE_U");
-  // panic_on((*pte * PTE_COW) != 0, "PTE_COW");
   if ((*pte & PTE_V) == 0) return -1;
   if ((*pte & PTE_U) == 0) return -1;
   if ((*pte & PTE_COW) == 0) return -1;
@@ -366,7 +363,7 @@ uvmcow(pagetable_t pagetable, uint64 va)
   pa = PTE2PA(*pte);
   flags = PTE_FLAGS(*pte);
 
-  if ((mem = kalloc()) == 0) return -1;
+  if ((mem = kalloc()) == 0) return -2;
   flags &= (~PTE_COW); flags |= (PTE_W);
   memmove(mem, (void *)pa, PGSIZE);
   uvmunmap(pagetable, va, 1, 1);

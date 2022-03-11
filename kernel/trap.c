@@ -82,7 +82,8 @@ usertrap(void)
     // ok
   } else if (r_scause() == 15) {
     int rt = pgfault_handler(r_stval());
-    if (rt != 0) uerr_handler(p);
+    if (rt == -1) uerr_handler(p);
+    if (rt != 0) p->killed = 1;
   } else {
     uerr_handler(p);
   }

@@ -33,7 +33,7 @@ The repository includes useful material for learning MIT-6.S081: Introduction to
 * [Lecture 07: Q&A for Labs #1](https://kristoff-starling.github.io/2022/02/01/MIT-6.S081%20Lecture%2007%20-%20QA%20for%20Labs%201/)
 * [Lecture 08: Page Faults](https://kristoff-starling.github.io/2022/02/03/MIT-6.S081%20Lecture%2008%20-%20Page%20Faults/)
 * [Lecture 09: Interrupts](https://kristoff-starling.github.io/2022/02/10/MIT-6.S081%20Lecture%2009%20-%20Interrupts/)
-* Lecture 10: Multiprocessors and Locks
+* [Lecture 10: Multiprocessors and Locks](https://kristoff-starling.github.io/2022/03/12/MIT-6.S081%20Lecture%2010%20-%20Multiprocessors%20and%20Locks/)
 * Lecture 11: Thread Switching
 * Lecture 12: Q&A for Labs #2
 * Lecture 13: Sleep & Wakeup

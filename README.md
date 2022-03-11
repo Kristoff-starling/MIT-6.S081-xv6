@@ -15,7 +15,7 @@ The repository includes useful material for learning MIT-6.S081: Introduction to
 | Lab 03: Page tables | Completed | - | ☆☆☆☆☆ | [Lab Report](https://kristoff-starling.github.io/2022/01/28/MIT-6.S081%20Lab%2003%20-%20Page%20tables/) |
 | Lab 04: Traps | Completed | - | ☆ | [Lab Report](https://kristoff-starling.github.io/2022/01/31/MIT-6.S081%20Lab%2004%20-%20Traps/) |
 | Lab 05: Lazy allocation                            | Completed | - | ☆☆ | [Lab Report](https://kristoff-starling.github.io/2022/02/03/MIT-6.S081%20Lab%2005%20-%20Lazy%20allocation/) |
-| Lab 06: Copy-on-write fork                           | - | - |  |  |
+| Lab 06: Copy-on-write fork                           | Completed | - | ☆☆☆ | [Lab Report](https://kristoff-starling.github.io/2022/03/11/MIT-6.S081%20Lab%2006%20-%20Copy-on-write%20fork/) |
 | Lab 07: Multithreading                                       | - | - |  |  |
 | Lab 08: Locks                                                | - | - |  |  |
 | Lab 09: File system                                          | - | - |  |  |

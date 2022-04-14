@@ -315,6 +315,9 @@ fork(void)
 void
 reparent(struct proc *p)
 {
+  if (!holding(&p->lock))
+    panic("reparent");
+
   struct proc *pp;
 
   for(pp = proc; pp < &proc[NPROC]; pp++){

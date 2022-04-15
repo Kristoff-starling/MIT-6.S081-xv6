@@ -5,6 +5,8 @@
 
 LAB_UTIL=01
 LAB_SYSCALL=02
+LAB_COW=06
+LAB_THREAD=07
 
 -include conf/lab.mk
 
@@ -160,7 +162,6 @@ UPROGS=\
 	$U/_grind\
 	$U/_wc\
 	$U/_zombie\
-	$U/_cowtest\
 
 ifdef LAB_UTIL
 UPROGS+=\
@@ -171,7 +172,6 @@ UPROGS+=\
 	$U/_xargs\
 
 endif
-
 
 ifdef LAB_SYSCALL
 UPROGS += \
@@ -193,6 +193,11 @@ endif
 ifdef LAB_COW
 UPROGS += \
 	$U/_cowtest
+endif
+
+ifdef LAB_THREAD
+UPROGS += \
+	$U/_spin
 endif
 
 UEXTRA=

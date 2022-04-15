@@ -1,6 +1,6 @@
 //
 // spin.c
-// a teaching demo illustrating the principle of thread switching.
+// a demo program illustrating the principle of thread switching.
 //
 
 #include "kernel/types.h"

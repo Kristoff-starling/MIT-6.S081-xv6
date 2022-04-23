@@ -1,0 +1,5 @@
+Suppose that two threads call insert() concurrently,
+then they will get the same list head, add an entry 
+to the front the 'head', and set the new head as the
+new entry. After that, our list loses an entry since
+two entries are added to the front of the same head.

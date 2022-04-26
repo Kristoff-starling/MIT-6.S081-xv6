@@ -356,6 +356,8 @@ uvmcow(pagetable_t pagetable, uint64 va)
   uint64 pa;
   void *mem;
 
+  if (va >= MAXVA) return -1;
+
   if ((pte = walk(pagetable, va, 0)) == 0) return -1;
   if ((*pte & PTE_V) == 0) return -1;
   if ((*pte & PTE_U) == 0) return -1;

@@ -69,7 +69,7 @@ kfree(void *pa)
     return;
   }
   release(&cntlock);
-  panic_on(ref_cnt[PGINDEX((uint64)pa)] == 0, "kfree: mapped");
+  panic_on(ref_cnt[PGINDEX((uint64)pa)] != 0, "kfree: mapped");
 
   // Fill with junk to catch dangling refs.
   memset(pa, 1, PGSIZE);
@@ -100,7 +100,7 @@ kalloc(void)
   {
     memset((char*)r, 5, PGSIZE); // fill with junk
     acquire(&cntlock);
-    panic_on(ref_cnt[PGINDEX((uint64)r)] == 0, "rcnt");
+    panic_on(ref_cnt[PGINDEX((uint64)r)] != 0, "rcnt");
     ref_cnt[PGINDEX((uint64)r)] = 1;
     release(&cntlock);
   }
@@ -111,9 +111,9 @@ kalloc(void)
 void
 kmref(uint64 pa, int delta)
 {
-  panic_on(PGINDEX(pa) <= PGCNT, "invalid pa");
+  panic_on(PGINDEX(pa) > PGCNT, "invalid pa");
   acquire(&cntlock);
   ref_cnt[PGINDEX(pa)] += delta;
-  panic_on(ref_cnt[PGINDEX(pa)] >= 0, "strange ref");
+  panic_on(ref_cnt[PGINDEX(pa)] < 0, "strange ref");
   release(&cntlock);
 }

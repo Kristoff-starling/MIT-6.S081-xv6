@@ -122,6 +122,7 @@ brelse(struct buf *b)
   releasesleep(&b->lock);
 
   acquire(&bcache.lock);
+  if (b->refcnt == 0) panic("bug");
   b->refcnt--;
   if (b->refcnt == 0) {
     // no one is waiting for it.

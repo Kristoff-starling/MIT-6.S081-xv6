@@ -12,13 +12,13 @@ The repository includes useful material for learning MIT-6.S081: Introduction to
 
 | Lab title                                                    | Code | Master branch project | Difficulty |
 | :----------------------------------------------------------- | :--: | :-------------------: | :-------------------: |
-| Lab 01: Xv6 and Unix utilities | Completed | Completed | ☆ |
-| Lab 02: System calls           | Completed | Completed | ☆ |
+| Lab 01: Xv6 and Unix utilities | Completed | Completed | ☆     |
+| Lab 02: System calls           | Completed | Completed | ☆     |
 | Lab 03: Page tables            | Completed | -         | ☆☆☆☆☆ |
-| Lab 04: Traps                  | Completed | -         | ☆ |
-| Lab 05: Lazy allocation        | Completed | -         | ☆☆
-| Lab 06: Copy-on-write fork     | Completed | -         | ☆☆☆ |
-| Lab 07: Multithreading         | Completed | -         |  |
+| Lab 04: Traps                  | Completed | -         | ☆     |
+| Lab 05: Lazy allocation        | Completed | -         | ☆☆    |
+| Lab 06: Copy-on-write fork     | Completed | -         | ☆☆☆   |
+| Lab 07: Multithreading         | Completed | -         | ☆     |
 | Lab 08: Locks                  | - | - |  |
 | Lab 09: File system            | - | - |  |
 | Lab 10: mmap                   | - | - |  |
